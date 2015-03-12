@@ -1,0 +1,68 @@
+﻿<Window x:Class="file_renamer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="MainWindow" Height="653" Width="879" WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open Files"/>
+                <MenuItem Header="Open Folder"/>
+                <MenuItem Header="_Close"/>
+                <MenuItem Header="_Save"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Node Stack">
+                        <ListBox Name="nodelist" SelectedItem="{Binding SelectedItem}" DisplayMemberPath="Name" ItemsSource="{Binding Stack}"/>
+                    </GroupBox>
+                    <StackPanel HorizontalAlignment="Left" Height="28" VerticalAlignment="Center" Orientation="Horizontal" Grid.Row="1">
+                        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Command="{Binding MoveItem}" CommandParameter="up">
+                            <StackPanel Margin="3">
+                                <Image Source="C:\Users\theiv_000\Pictures\icons\arrow_up.png"/>
+                            </StackPanel>
+                        </Button>
+                        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Command="{Binding MoveItem}" CommandParameter="down">
+                            <StackPanel Margin="3">
+                                <Image Source="C:\Users\theiv_000\Pictures\icons\arrow_down.png"/>
+                            </StackPanel>
+                        </Button>
+                        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Command="{Binding AddItem}">
+                            <StackPanel Margin="3">
+                                <Image Source="C:\Users\theiv_000\Pictures\icons\add.png"/>
+                            </StackPanel>
+                        </Button>
+                        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Command="{Binding RemoveItem}" >
+                            <StackPanel Margin="3">
+                                <Image Source="C:\Users\theiv_000\Pictures\icons\delete.png"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <GroupBox Header="Parameters" Grid.Row="1">
+                    <xctk:PropertyGrid x:Name="_propertyGrid" Width="Auto"
+        			AutoGenerateProperties="True" IsCategorized="False" PropertyValueChanged="_propertyGrid_PropertyChanged" SelectedObject="{Binding SelectedItem}"/>
+                </GroupBox>
+            </Grid>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+            <DataGrid x:Name="datagrid1" Grid.Column="2" ItemsSource="{Binding Manager.Files}" IsReadOnly="True" />
+
+        </Grid>
+    </DockPanel>
+    
+</Window>

@@ -1,0 +1,27 @@
+﻿<Window x:Class="file_renamer.NodeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NodeDialog" Height="300" Width="453" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Margin="9">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Content="Choose a tranformation node from the list below:"/>
+            <ListBox x:Name="nodeList" DisplayMemberPath="Name" Grid.Row="1" SelectedItem="{Binding SelectedType}" MouseDoubleClick="accept" ItemsSource="{Binding Manager.Nodes}" />
+            <GroupBox Header="Description" Grid.Row="2">
+                <Label Content="{Binding SelectedType}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="175"/>
+            </GroupBox>
+        </Grid>
+        <StackPanel Grid.Column="1">
+            <Button Content="OK" Width="75" IsDefault="True" Click="accept"/>
+            <Button Content="Cancel" Width="75" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>
