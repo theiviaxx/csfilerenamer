@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace file_renamer
 {
-    public class StackManager
+    public class StackManager : BindableBase
     {
         private List<Type> m_nodes;
-        public List<FileString> m_files;
+        private ObservableCollection<FileString> m_files;
 
         public StackManager()
         {
@@ -21,39 +22,46 @@ namespace file_renamer
             m_nodes.Add(typeof(ClearNode));
             m_nodes.Add(typeof(InsertNode));
             m_nodes.Add(typeof(RemoveNode));
-            GetFiles();
+
+            m_files = new ObservableCollection<FileString>();
+            //GetFiles();
         }
 
         public List<Type> Nodes { get { return m_nodes; } }
-        public List<FileString> Files { get { return m_files; } }
+        public ObservableCollection<FileString> Files { get { return m_files; } private set {SetProperty(ref m_files, value);} }
 
-        public List<FileString> GetFiles()
+        public void GetFiles(string root)
         {
-            DirectoryInfo di = new DirectoryInfo(@"C:\tmp\frogdist\frog");
-            m_files = WalkDirectoryTree(di);
-
-            return m_files;
+            DirectoryInfo di = new DirectoryInfo(root);
+            WalkDirectoryTree(di);
         }
 
-        List<FileString> WalkDirectoryTree(DirectoryInfo root)
+        public void Add(FileString filename)
         {
-            List<FileString> filenames = new List<FileString>();
+            if (!m_files.Contains(filename)) {
+                m_files.Add(filename);
+            }
+        }
+
+        ObservableCollection<FileString> WalkDirectoryTree(DirectoryInfo root)
+        {
+            
             FileInfo[] files = null;
             
 
             files = root.GetFiles("*.*");
             foreach (System.IO.FileInfo fi in files)
             {
-                filenames.Add(new FileString(fi));
+                m_files.Add(new FileString(fi));
             }
 
             System.IO.DirectoryInfo[] subdirs = null;
             subdirs = root.GetDirectories();
             foreach (System.IO.DirectoryInfo dirinfo in subdirs) {
-                filenames.AddRange(WalkDirectoryTree(dirinfo));
+                WalkDirectoryTree(dirinfo);
             }
 
-            return filenames;
+            return m_files;
         }
 
         public void RunTransforms(IEnumerable<INode> stack)
@@ -69,6 +77,27 @@ namespace file_renamer
                     m_files[i].Preview = node.Run(m_files[i]);
                 }
             }
+        }
+        public void ExecuteTransforms()
+        {
+            int success, errors;
+            success = 0;
+            errors = 0;
+            for (int i = 0; i < m_files.Count; i++)
+            {
+                string current = m_files[i].Value;
+                if (m_files[i].MoveTo(m_files[i].Preview).FullName == current)
+                {
+                    errors++;
+                }
+                else
+                {
+                    m_files[i].Value = m_files[i].Preview;
+                    success++;
+                }
+            }
+
+            Console.Write(String.Format("{0} successes and {1} errors", success, errors));
         }
     }
 }
