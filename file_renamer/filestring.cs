@@ -14,7 +14,7 @@ namespace file_renamer
         private string m_preview;
         private bool m_iserror;
         private string m_errormessage;
-        FileInfo m_fileinfo;
+        private FileInfo m_fileinfo;
 
         public FileString(FileInfo fi)
         {
@@ -32,27 +32,53 @@ namespace file_renamer
         {
             return m_value == other.Value;
         }
-        public bool IsError { get { return m_iserror; } }
-        public string ErrorMessage { get { return m_errormessage; } }
         public string Value { get { return m_value; } set { m_value = value; } }
-        public string Preview { get { return m_preview; } set {
-
-            SetProperty(ref m_preview, value);
-        } }
-        private FileInfo File { get { return m_fileinfo; } }
-        public FileInfo MoveTo(string dest)
+        public bool IsError
+        {
+            get
+            {
+                return m_iserror;
+            }
+            set
+            {
+                SetProperty(ref m_iserror, value);
+            }
+        }
+        public string ErrorMessage
+        {
+            get
+            {
+                return m_errormessage;
+            }
+            set
+            {
+                SetProperty(ref m_errormessage, value);
+            }
+        }
+        
+        public string Preview
+        {
+            get
+            {
+                return m_preview;
+            }
+            set
+            {
+                SetProperty(ref m_preview, value);
+            }
+        }
+        
+        public Exception Move()
         {
             try
             {
-                m_fileinfo.MoveTo("fooc:/foo");
+                m_fileinfo.MoveTo(m_preview);
             }
             catch (Exception ex) {
-                SetProperty(ref m_iserror, true);
-                SetProperty(ref m_errormessage, ex.Message);
-                return m_fileinfo;
+                return ex;
             }
-            
-            return new FileInfo(dest);
+
+            return null;
         }
         
         

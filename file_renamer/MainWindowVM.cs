@@ -99,6 +99,12 @@ namespace file_renamer
                     }
                 }
             );
+            ClearFiles = new Command(
+                p =>
+                {
+                    m_manager.Files.Clear();
+                }
+            );
         }
         public StackManager Manager 
         { 
@@ -141,5 +147,6 @@ namespace file_renamer
         public Command Execute { get; private set; }
         public Command OpenFiles { get; private set; }
         public Command OpenFolder { get; private set; }
+        public Command ClearFiles { get; private set; }
     }
 }

@@ -8,6 +8,7 @@
             <MenuItem Header="_File">
                 <MenuItem Header="_Open Files" Command="{Binding OpenFiles}"/>
                 <MenuItem Header="Open Folder" Command="{Binding OpenFolder}"/>
+                <MenuItem Header="Clear" Command="{Binding ClearFiles}"/>
                 <MenuItem Header="_Close"/>
                 <MenuItem Header="_Save" Command="{Binding Execute}"/>
             </MenuItem>
@@ -56,7 +57,7 @@
                 </Grid>
                 <GroupBox Header="Parameters" Grid.Row="1">
                     <xctk:PropertyGrid x:Name="_propertyGrid" Width="Auto"
-        			AutoGenerateProperties="True" IsCategorized="False" PropertyValueChanged="_propertyGrid_PropertyChanged" SelectedObject="{Binding SelectedItem}"/>
+        			AutoGenerateProperties="True" IsCategorized="False" PropertyValueChanged="_propertyGrid_PropertyChanged" SelectedObject="{Binding SelectedItem}" ShowSearchBox="False" ShowSortOptions="False"/>
                 </GroupBox>
             </Grid>
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />

@@ -24,7 +24,6 @@ namespace file_renamer
             m_nodes.Add(typeof(RemoveNode));
 
             m_files = new ObservableCollection<FileString>();
-            //GetFiles();
         }
 
         public List<Type> Nodes { get { return m_nodes; } }
@@ -86,18 +85,21 @@ namespace file_renamer
             for (int i = 0; i < m_files.Count; i++)
             {
                 string current = m_files[i].Value;
-                if (m_files[i].MoveTo(m_files[i].Preview).FullName == current)
-                {
-                    errors++;
-                }
-                else
+                Exception ex = m_files[i].Move();
+                if (ex == null)
                 {
                     m_files[i].Value = m_files[i].Preview;
                     success++;
                 }
+                else
+                {
+                    m_files[i].IsError = true;
+                    m_files[i].ErrorMessage = ex.Message;
+                    errors++;
+                }
             }
 
-            Console.Write(String.Format("{0} successes and {1} errors", success, errors));
+            Console.Write(String.Format("\n\n{0} successes and {1} errors\n\n", success, errors));
         }
     }
 }
